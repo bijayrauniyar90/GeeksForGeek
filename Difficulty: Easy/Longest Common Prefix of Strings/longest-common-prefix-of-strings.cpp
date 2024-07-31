@@ -9,32 +9,26 @@ using namespace std;
 // User function template for C++
 
 class Solution {
-  public:
-        string longestCommonPrefix(vector<string> arr) {
-           if (arr.empty()) {
-        return "";
-    }
-    
-    sort(arr.begin(), arr.end());
-
-    string first = arr[0];
-    string last = arr[arr.size() - 1];
-    string ans = "";
-
-    for (int i = 0; i < first.size(); i++) {
-        char s = first[i];
-        if (i >= last.size() || first[i] != last[i]) {
-            break;
+public:
+    string longestCommonPrefix(vector<string>& arr) {
+        if (arr.empty()) return "-1";
+        
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        
+        string first = arr[0];
+        string last = arr[n - 1];
+        string ans = "";
+        
+        for (int i = 0; i < first.size(); ++i) {
+            if (first[i] == last[i]) {
+                ans += first[i];
+            } else {
+                break;
+            }
         }
-        ans += s;
-    }
-
-    if (ans.empty()) {
-        return "-1";
-    }
-    
-    return ans;
-
+        
+        return ans.empty() ? "-1" : ans;
     }
 };
 
