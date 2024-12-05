@@ -5,27 +5,27 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
-public:
+  public:
     void sort012(vector<int>& arr) {
-        int low = 0, mid = 0, high = arr.size() - 1;
-        
-        while (mid <= high) {
-            if (arr[mid] == 0) {
-                swap(arr[low], arr[mid]);
-                low++;
-                mid++;
-            } 
-            else if (arr[mid] == 1) {
-                mid++;
-            } 
-            else {
-                swap(arr[mid], arr[high]);
-                high--;
-            }
-        }
+        // code here
+       int mid=0, low=0,high=arr.size()-1;
+       
+       while(mid<=high){
+           if(arr[mid]==0){
+               swap(arr[mid],arr[low]);
+               low++;
+               mid++;
+           }
+           else if(arr[mid]==1){
+               mid++;
+           }
+           else{
+               swap(arr[mid],arr[high]);
+               high--;
+           }
+       }
     }
 };
-
 
 //{ Driver Code Starts.
 int main() {
@@ -53,6 +53,7 @@ int main() {
         }
 
         cout << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
