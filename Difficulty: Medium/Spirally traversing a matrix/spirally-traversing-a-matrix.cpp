@@ -6,54 +6,37 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    vector<int> spirallyTraverse(vector<vector<int> > &a) {
-        int n=a.size();
-        int m=a[0].size();
-        int k=n*m;
-        int count=0;
-        int starti=0;
-        int startj=0;
-        int endi=n-1;
-        int endj=m-1; 
-        vector<int>val;
-        while(count!=k){ 
-            for(int i=startj;i<=endj;i++){
-                count++;
-                val.push_back(a[starti][i]);
-                if(count==k){
-                    return val;
+    vector<int> spirallyTraverse(vector<vector<int> > &mat) {
+        int left=0, right=mat[0].size()-1; // last column
+        int top=0, bottom=mat.size()-1; // last row
+        vector<int>ans;
+        while(left<=right && top<=bottom){
+            //step1
+           for(int i=left; i<=right; i++){
+              ans.push_back(mat[top][i]);
+           }
+           top++;
+            //step2
+           for(int i=top;i<=bottom;i++){
+               ans.push_back(mat[i][right]);
+           }
+           right--;
+           if(top<=bottom){ //step3
+               for(int i=right;i>=left;i--){
+                   ans.push_back(mat[bottom][i]);
                 }
+               bottom--; 
             }
-            starti++;
-            for(int i=starti;i<=endi;i++){
-                count++;
-                val.push_back(a[i][endj]);
-                if(count==k){
-                    return val;
-                }
+            if(left<=right){ //step4
+              for(int i=bottom;i>=top;i--){
+                  ans.push_back(mat[i][left]);
+               }
+               left++; 
             }
-            endj--;
-            for(int i=endj;i>=startj;i--){
-                count++;
-                val.push_back(a[endi][i]);
-                if(count==k){
-                    return val;
-                }
-            }
-            endi--;
-            for(int i=endi;i>=starti;i--){
-                count++;
-                val.push_back(a[i][startj]);
-                if(count==k){
-                    return val;
-                }             
-                
-            }
-            startj++;
-        }
-        return vector<int>{};
-    }
-};
+         }
+          return ans;
+      }
+   };
 
 //{ Driver Code Starts.
 int main() {
@@ -63,9 +46,10 @@ int main() {
     while (t--) {
         int r, c;
         cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c, 0));
+        vector<vector<int>> matrix(r);
 
         for (int i = 0; i < r; i++) {
+            matrix[i].assign(c, 0);
             for (int j = 0; j < c; j++) {
                 cin >> matrix[i][j];
             }
@@ -76,6 +60,9 @@ int main() {
         for (int i = 0; i < result.size(); ++i)
             cout << result[i] << " ";
         cout << endl;
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
