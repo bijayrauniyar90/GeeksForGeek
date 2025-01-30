@@ -4,67 +4,75 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
 // User function Template for C++
 
 class Solution {
-public:
-    void recPlaceQueen(vector<vector<int>>& res, vector<int>& placed, int n, vector<bool>& cols, vector<bool>& diag1, vector<bool>& diag2) {
-        int c = placed.size();
-        if (c == n) {
-            res.push_back(placed);
-            return;
-        }
-
-        for (int r = 0; r < n; r++) {
-            int d1 = c - r + n; // Main diagonal
-            int d2 = c + r; // Anti-diagonal
-            if (cols[r] || diag1[d1] || diag2[d2]) continue;
-
-            placed.push_back(r + 1); // Store 1-based index
-            cols[r] = diag1[d1] = diag2[d2] = true;
-
-            recPlaceQueen(res, placed, n, cols, diag1, diag2);
-
-            placed.pop_back();
-            cols[r] = diag1[d1] = diag2[d2] = false;
-        }
+  public:
+    vector<vector<int>> nQueen(int n) {
+       
+        vector<vector<int>> result;
+        vector<int> board(n, 0);
+        solve(0, n, board, result);
+        return result;
     }
 
-    vector<vector<int>> nQueen(int n) {
-        vector<vector<int>> res;
-        vector<int> placed;
-        vector<bool> cols(n, false); // Track occupied columns
-        vector<bool> diag1(2 * n, false); // Track main diagonals
-        vector<bool> diag2(2 * n, false); // Track anti-diagonals
-        recPlaceQueen(res, placed, n, cols, diag1, diag2);
-        return res;
+private:
+    void solve(int col, int n, vector<int>& board, vector<vector<int>>& result) {
+        if (col == n) {
+            result.push_back(board);
+            return;
+        }
+        
+        for (int row = 0; row < n; row++) {
+            if (isSafe(board, col, row)) {
+                board[col] = row + 1;
+                solve(col + 1, n, board, result);
+            }
+        }
+    }
+    
+    bool isSafe(vector<int>& board, int col, int row) {
+        for (int i = 0; i < col; i++) {
+            int placedRow = board[i] - 1;
+            if (placedRow == row || abs(placedRow - row) == abs(i - col)) {
+                return false;
+            }
+        }
+        return true;
+  
+
+        // code here
     }
 };
 
-
 //{ Driver Code Starts.
 
-int main(){
+int main() {
     int t;
-    cin>>t;
-    while(t--){
+    cin >> t;
+    while (t--) {
         int n;
-        cin>>n;
-        
+        cin >> n;
+
         Solution ob;
         vector<vector<int>> ans = ob.nQueen(n);
-        if(ans.size() == 0)
-            cout<<-1<<"\n";
+        if (ans.size() == 0)
+            cout << -1 << "\n";
         else {
-            for(int i = 0;i < ans.size();i++){
-                cout<<"[";
-                for(int u: ans[i])
-                    cout<<u<<" ";
-                cout<<"] ";
+            sort(ans.begin(), ans.end());
+            for (int i = 0; i < ans.size(); i++) {
+                cout << "[";
+                for (int u : ans[i])
+                    cout << u << " ";
+                cout << "] ";
             }
-            cout<<endl;
+            cout << endl;
         }
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
