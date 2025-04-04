@@ -2,59 +2,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
+
 class Solution {
-public:
-    void BFS(int i, int j, int n, int m, vector<vector<char>>& grid, vector<vector<bool>>& visited) {
-        // Direction vectors for 8 neighboring cells
-        int dx[] = {1, 1, 0, -1, -1, -1, 0, 1};
-        int dy[] = {0, 1, 1, 1, 0, -1, -1, -1};
-
-        queue<pair<int, int>> q;
-        q.push({i, j});
-        visited[i][j] = true;
-
-        while (!q.empty()) {
-            // Access the front element of the queue
-            int x = q.front().first;
-            int y = q.front().second;
-            q.pop();
-
-            // Check all 8 directions
-            for (int k = 0; k < 8; ++k) {
-                int newX = x + dx[k];
-                int newY = y + dy[k];
-
-                if (newX >= 0 && newX < n && newY >= 0 && newY < m && 
-                    grid[newX][newY] == '1' && !visited[newX][newY]) {
-                    q.push({newX, newY});
-                    visited[newX][newY] = true;
-                }
-            }
-        }
-    }
-
-    int numIslands(vector<vector<char>>& grid) {
-        if (grid.empty()) return 0;
-
-        int n = grid.size();
-        int m = grid[0].size();
-        vector<vector<bool>> visited(n, vector<bool>(m, false));
-        int islandCount = 0;
-
-        // Traverse the grid
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                if (grid[i][j] == '1' && !visited[i][j]) {
-                    // Start BFS for each new island found
-                    BFS(i, j, n, m, grid, visited);
-                    ++islandCount;
-                }
-            }
-        }
-        return islandCount;
+  public: 
+  int n,m; 
+  vector<vector<char>> A;
+  int dx[8]={+1,-1,+0,+1,-1,+1,+0,-1}; 
+  int dy[8]={+1,-1,+1,+0,+1,-1,-1,+0}; 
+  void Fill(int i,int j) { 
+      A[i][j]='W'; 
+      for(int k=0;k<8;k++) { 
+          int k1=dx[k]+i; 
+          int k2=dy[k]+j; 
+          if(k1>=0 && k1<n && k2>=0 && k2<m && A[k1][k2]=='L')  
+          Fill(k1,k2);
+      }
+  }
+    int countIslands(vector<vector<char>>& grid) {
+        for(int i=0;i<grid.size();i++) 
+        A.push_back(grid[i]);
+    n=grid.size(); 
+    m=grid[0].size();  
+    int cnt=0;
+     for(int i=0;i<n;i++) 
+     for(int j=0;j<m;j++) { 
+         if(A[i][j]=='L') { 
+             cnt++; 
+             Fill(i,j);
+         }
+     } 
+     return cnt;
     }
 };
+
 
 
 
@@ -72,8 +54,11 @@ int main() {
             }
         }
         Solution obj;
-        int ans = obj.numIslands(grid);
+        int ans = obj.countIslands(grid);
         cout << ans << '\n';
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
